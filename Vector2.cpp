@@ -1,5 +1,12 @@
 #include "Vector2.h"
 
+std::string LunarMath::Vector2::ToString() const
+{
+	std::ostringstream ss;
+	ss << "LunarMath::Vector2(" << x << " , " << y << ')';
+	return std::string(ss.str());
+}
+
 LunarMath::Vector2::Vector2()
 {
 	x = 0;
@@ -38,7 +45,7 @@ LunarMath::Vector2 LunarMath::Vector2::Zero()
 	return Vector2(0, 0);
 }
 
-float LunarMath::Vector2::Length()
+float LunarMath::Vector2::Length() const
 {
 	return (float)sqrt(x * x + y * y);
 }
@@ -47,79 +54,132 @@ float LunarMath::Vector2::Length(const Vector2& v)
 	return (float)sqrt(v.x*v.x+v.y*v.y);
 }
 
-LunarMath::Vector2 LunarMath::Vector2::Normalized()
+LunarMath::Vector2 LunarMath::Vector2::Normalized() const
 {
 	return Vector2(x, y) / Length();
 }
-void LunarMath::Vector2::Normalize(Vector2& v)
+LunarMath::Vector2 LunarMath::Vector2::Normalized(const Vector2& v)
+{
+	return v/v.Length();
+}
+LunarMath::Vector2&  LunarMath::Vector2::Normalize(Vector2& v)
 {
 	v.Normalize();
-	return;
+	return v;
 }
-void LunarMath::Vector2::Normalize()
+LunarMath::Vector2& LunarMath::Vector2::Normalize()
 {
 	float l = Length();
 	x /= l;
 	y /= l;
 
-	return;
+	return *this;
 }
 
-float LunarMath::Vector2::DotProduct(Vector2 a, Vector2 b)
+float LunarMath::Vector2::DotProduct(const Vector2& a, const Vector2& b)
 {
 	return a.x * b.x + a.y * b.y;
 }
 
-LunarMath::Vector2 LunarMath::Vector2::operator=(const Vector2& v)
+float LunarMath::Vector2::operator[](const int& i) const
+{
+	int I = i;
+#ifdef OVERFLOW_PROT
+	I = i % 2;
+#endif
+	switch (I)
+	{
+	case 0:
+		return x;
+		break;
+	case 1:
+		return y;
+			break;
+	default:
+		throw std::out_of_range("index was > 1");
+		break;
+	}
+
+	return 0;
+}
+
+float& LunarMath::Vector2::operator[](const int& i) 
+{
+	int I = i;
+#ifdef OVERFLOW_PROT
+	I = i % 2;
+#endif
+	switch (I)
+	{
+	case 0:
+		return  x;
+		break;
+	case 1:
+		return y;
+		break;
+	default:
+		throw std::out_of_range("index was > 1");
+		break;
+	}
+
+	return x;
+}
+
+LunarMath::Vector2& LunarMath::Vector2::operator=(const Vector2& v)
 {
 	x = v.x;
 	y = v.y;
 	return *this;
 }
 
-LunarMath::Vector2 LunarMath::Vector2::operator+(Vector2 v)
+LunarMath::Vector2 LunarMath::Vector2::operator+(const Vector2& v) const
 {
 	return Vector2(x + v.x, y + v.y);
 }
-LunarMath::Vector2 LunarMath::Vector2::operator-(Vector2 v)
+LunarMath::Vector2 LunarMath::Vector2::operator-(const Vector2& v) const
 {
 	return Vector2(x - v.x, y - v.y);
 }
-LunarMath::Vector2 LunarMath::Vector2::operator*(float c)
+LunarMath::Vector2 LunarMath::Vector2::operator*(const float& c) const
 {
 	return Vector2(x * c, y * c);
 }
-LunarMath::Vector2 LunarMath::Vector2::operator/(float c)
+LunarMath::Vector2 LunarMath::Vector2::operator/( const float& c) const
 {
 	return Vector2(x / c, y / c);
 }
 
-void LunarMath::Vector2::operator+=(Vector2 v)
+LunarMath::Vector2& LunarMath::Vector2::operator+=(const Vector2& v)
 {
 	x = x + v.x;
 	y = y + v.y;
-	return;
+	return *this;
 }
-void LunarMath::Vector2::operator-=(Vector2 v)
+LunarMath::Vector2& LunarMath::Vector2::operator-=(const Vector2& v)
 {
 	x = x - v.x;
 	y = y - v.y;
-	return;
+	return *this;
 }
-void LunarMath::Vector2::operator*=(float c)
+LunarMath::Vector2& LunarMath::Vector2::operator*=(const float& c)
 {
 	x = x * c;
 	y = y * c;
-	return;
+	return *this;
 }
-void LunarMath::Vector2::operator/=(float c)
+LunarMath::Vector2& LunarMath::Vector2::operator/=(const float& c)
 {
 	x = x / c;
 	y = y / c;
-	return;
+	return *this;
 }
 
-bool LunarMath::Vector2::operator==(const Vector2& o)
+bool LunarMath::Vector2::operator!=(const Vector2& v) const
+{
+	return x != v.x||y!= v.y;
+}
+
+bool LunarMath::Vector2::operator==(const Vector2& o) const
 {
 	return x == o.x &&y == o.y;
 }
