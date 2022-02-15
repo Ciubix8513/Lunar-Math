@@ -10,12 +10,13 @@ namespace LunarMath
 {
 #define Deg2Rad  0.0174532925f
 #define PI (double)3.1415926535897932384626433832795f	
-	struct  Vector2
+	class  Vector2
 	{
 	public:
 #pragma region VectorCreation + Consts
 		Vector2();
-		Vector2(float NewX, float NewY);
+		Vector2(const float& f);
+		Vector2(const float& NewX,const float& NewY);
 		static Vector2 Up();
 		static Vector2 Down();
 		static Vector2 Right();
@@ -25,15 +26,16 @@ namespace LunarMath
 
 #pragma region Functions
 		float Length();
-		static float Length(Vector2& v);
+		static float Length(const Vector2& v);
 		Vector2 Normalized();
 		static void Normalize(Vector2& v);
 		void Normalize();
-		static float DotProduct(Vector2 a, Vector2 b);
+		static float DotProduct(const Vector2 a, Vector2 b);
 
 #pragma endregion
 
 #pragma region operators
+		Vector2 operator=(const Vector2& v);
 		Vector2 operator+(Vector2 v);
 		Vector2 operator-(Vector2 v);
 		Vector2 operator*(float c);
@@ -42,6 +44,8 @@ namespace LunarMath
 		void operator-=(Vector2 v);
 		void operator*=(float c);
 		void operator/=(float c);
+		bool operator==(const Vector2& v);
+		
 #pragma endregion
 		float x, y;
 	};

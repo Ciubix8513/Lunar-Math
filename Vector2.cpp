@@ -6,7 +6,12 @@ LunarMath::Vector2::Vector2()
 	y = 0;
 }
 
-LunarMath::Vector2::Vector2(float NewX, float NewY)
+LunarMath::Vector2::Vector2(const float& f)
+{
+	x = f; y = f;
+}
+
+LunarMath::Vector2::Vector2(const float& NewX, const float& NewY)
 {
 	x = NewX;
 	y = NewY;
@@ -35,11 +40,11 @@ LunarMath::Vector2 LunarMath::Vector2::Zero()
 
 float LunarMath::Vector2::Length()
 {
-	return (float)sqrt((float)(x * x + y * y));
+	return (float)sqrt(x * x + y * y);
 }
-float LunarMath::Vector2::Length(Vector2& v)
+float LunarMath::Vector2::Length(const Vector2& v)
 {
-	return v.Length();
+	return (float)sqrt(v.x*v.x+v.y*v.y);
 }
 
 LunarMath::Vector2 LunarMath::Vector2::Normalized()
@@ -48,13 +53,14 @@ LunarMath::Vector2 LunarMath::Vector2::Normalized()
 }
 void LunarMath::Vector2::Normalize(Vector2& v)
 {
-	v /= v.Length();
+	v.Normalize();
 	return;
 }
 void LunarMath::Vector2::Normalize()
 {
-	x /= Length();
-	y /= Length();
+	float l = Length();
+	x /= l;
+	y /= l;
 
 	return;
 }
@@ -62,6 +68,13 @@ void LunarMath::Vector2::Normalize()
 float LunarMath::Vector2::DotProduct(Vector2 a, Vector2 b)
 {
 	return a.x * b.x + a.y * b.y;
+}
+
+LunarMath::Vector2 LunarMath::Vector2::operator=(const Vector2& v)
+{
+	x = v.x;
+	y = v.y;
+	return *this;
 }
 
 LunarMath::Vector2 LunarMath::Vector2::operator+(Vector2 v)
@@ -105,3 +118,9 @@ void LunarMath::Vector2::operator/=(float c)
 	y = y / c;
 	return;
 }
+
+bool LunarMath::Vector2::operator==(const Vector2& o)
+{
+	return x == o.x &&y == o.y;
+}
+
