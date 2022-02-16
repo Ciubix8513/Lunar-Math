@@ -43,6 +43,7 @@ namespace LunarMath
 		Vector2& Normalize();
 
 		static float DotProduct(const Vector2& a,const Vector2& b);
+		static Vector2 Lerp(const Vector2& a, const Vector2& b, float t);
 
 #pragma endregion
 

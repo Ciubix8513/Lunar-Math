@@ -81,6 +81,11 @@ float LunarMath::Vector2::DotProduct(const Vector2& a, const Vector2& b)
 	return a.x * b.x + a.y * b.y;
 }
 
+LunarMath::Vector2 LunarMath::Vector2::Lerp(const Vector2& a, const Vector2& b, float t)
+{
+	return a +( (b - a) *t);
+}
+
 float LunarMath::Vector2::operator[](const int& i) const
 {
 	int I = i;
