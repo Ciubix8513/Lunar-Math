@@ -51,7 +51,7 @@ float LunarMath::Vector2::Length() const
 }
 float LunarMath::Vector2::Length(const Vector2& v)
 {
-	return (float)sqrt(v.x*v.x+v.y*v.y);
+	return (float)sqrt(v.x * v.x + v.y * v.y);
 }
 
 LunarMath::Vector2 LunarMath::Vector2::Normalized() const
@@ -60,9 +60,9 @@ LunarMath::Vector2 LunarMath::Vector2::Normalized() const
 }
 LunarMath::Vector2 LunarMath::Vector2::Normalized(const Vector2& v)
 {
-	return v/v.Length();
+	return v / v.Length();
 }
-LunarMath::Vector2&  LunarMath::Vector2::Normalize(Vector2& v)
+LunarMath::Vector2& LunarMath::Vector2::Normalize(Vector2& v)
 {
 	v.Normalize();
 	return v;
@@ -81,6 +81,11 @@ float LunarMath::Vector2::DotProduct(const Vector2& a, const Vector2& b)
 	return a.x * b.x + a.y * b.y;
 }
 
+LunarMath::Vector2 LunarMath::Vector2::Lerp(const Vector2& a, const Vector2& b, float t)
+{
+	return a + ((b - a) * t);
+}
+
 float LunarMath::Vector2::operator[](const int& i) const
 {
 	int I = i;
@@ -94,7 +99,7 @@ float LunarMath::Vector2::operator[](const int& i) const
 		break;
 	case 1:
 		return y;
-			break;
+		break;
 	default:
 		throw std::out_of_range("index was > 1");
 		break;
@@ -103,7 +108,7 @@ float LunarMath::Vector2::operator[](const int& i) const
 	return 0;
 }
 
-float& LunarMath::Vector2::operator[](const int& i) 
+float& LunarMath::Vector2::operator[](const int& i)
 {
 	int I = i;
 #ifdef OVERFLOW_PROT
@@ -144,7 +149,7 @@ LunarMath::Vector2 LunarMath::Vector2::operator*(const float& c) const
 {
 	return Vector2(x * c, y * c);
 }
-LunarMath::Vector2 LunarMath::Vector2::operator/( const float& c) const
+LunarMath::Vector2 LunarMath::Vector2::operator/(const float& c) const
 {
 	return Vector2(x / c, y / c);
 }
@@ -176,11 +181,10 @@ LunarMath::Vector2& LunarMath::Vector2::operator/=(const float& c)
 
 bool LunarMath::Vector2::operator!=(const Vector2& v) const
 {
-	return x != v.x||y!= v.y;
+	return x != v.x || y != v.y;
 }
 
 bool LunarMath::Vector2::operator==(const Vector2& o) const
 {
-	return x == o.x &&y == o.y;
+	return x == o.x && y == o.y;
 }
-

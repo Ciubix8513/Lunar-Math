@@ -7,15 +7,15 @@
 #include <exception>
 
 //using namespace std;
-#define Dot DotProduct 
+#define Dot DotProduct
 #define norm Nomalize
-#define normd Nomalized 
-#define vec2 Vector2 
+#define normd Nomalized
+#define vec2 Vector2
 
 namespace LunarMath
 {
 #define Deg2Rad  0.0174532925f
-#define PI (double) 3.1415926535897932384626433832795f	
+#define PI (double) 3.1415926535897932384626433832795f
 	class  Vector2
 	{
 	public:
@@ -24,7 +24,7 @@ namespace LunarMath
 #pragma region VectorCreation + Consts
 		Vector2();
 		Vector2(const float& f);
-		Vector2(const float& NewX,const float& NewY);
+		Vector2(const float& NewX, const float& NewY);
 		static Vector2 Up();
 		static Vector2 Down();
 		static Vector2 Right();
@@ -42,13 +42,14 @@ namespace LunarMath
 		static  Vector2& Normalize(Vector2& v);
 		Vector2& Normalize();
 
-		static float DotProduct(const Vector2& a,const Vector2& b);
+		static float DotProduct(const Vector2& a, const Vector2& b);
+		static Vector2 Lerp(const Vector2& a, const Vector2& b, float t);
 
 #pragma endregion
 
 #pragma region operators
 		float operator[](const int& i) const;
-		float& operator[](const int& i) ;
+		float& operator[](const int& i);
 		Vector2& operator=(const Vector2& v);
 		Vector2 operator+(const Vector2& v) const;
 		Vector2 operator-(const Vector2& v) const;
@@ -57,7 +58,7 @@ namespace LunarMath
 		Vector2& operator+=(const Vector2& v);
 		Vector2& operator-=(const Vector2& v);
 		Vector2& operator*=(const float& c);
-		Vector2& operator/=(const float& c);	
+		Vector2& operator/=(const float& c);
 
 		bool operator!=(const Vector2& v) const;
 		bool operator==(const Vector2& v) const;
