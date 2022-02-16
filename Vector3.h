@@ -17,13 +17,14 @@ namespace LunarMath
 		bool operator!= (Vector3int other);
 	};
 
-	struct Vector3
+	class Vector3
 	{
 	public:
 #pragma region VectorCreation + Consts
+		Vector3(float f);
 		Vector3(float NewX, float NewY, float NewZ);
-		Vector3(Vector2 NewXY, float NewZ);
-		Vector3(float NewX, Vector2 NewYZ);
+		Vector3(const Vector2& NewXY, float NewZ);
+		Vector3(float NewX, const Vector2& NewYZ);
 		Vector3();
 
 		static Vector3 Up();
@@ -58,9 +59,9 @@ namespace LunarMath
 		void operator-=(Vector3 v);
 		void operator*=(float c);
 		void operator/=(float c);
-		operator DirectX::XMFLOAT3();
-
-		bool operator!=(Vector3 v);
+		
+		bool operator==(const Vector3& v) const;
+		bool operator!=(const Vector3& v) const;
 #pragma endregion
 
 		float x, y, z;

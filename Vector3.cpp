@@ -1,18 +1,23 @@
 #include "Vector3.h"
 
+LunarMath::Vector3::Vector3(float f)
+{
+	x = y = z = f;
+}
+
 Vector3::Vector3(float NewX, float NewY, float NewZ)
 {
 	x = NewX;
 	y = NewY;
 	z = NewZ;
 }
-Vector3::Vector3(Vector2 NewXY, float NewZ)
+Vector3::Vector3(const Vector2& NewXY, float NewZ)
 {
 	x = NewXY.x;
 	y = NewXY.y;
 	z = NewZ;
 }
-Vector3::Vector3(float NewX, Vector2 NewYZ)
+Vector3::Vector3(float NewX,const Vector2& NewYZ)
 {
 	x = NewX;
 	y = NewYZ.x;
@@ -20,10 +25,9 @@ Vector3::Vector3(float NewX, Vector2 NewYZ)
 }
 LunarMath::Vector3::Vector3()
 {
-	x = 0;
-	y = 0;
-	z = 0;
+	x = y = z = 0;
 }
+
 Vector3 LunarMath::Vector3::Up()
 {
 	return Vector3(0, 1, 0);
@@ -147,17 +151,18 @@ void LunarMath::Vector3::operator/=(float c)
 	return;
 }
 
-LunarMath::Vector3::operator DirectX::XMFLOAT3()
+bool LunarMath::Vector3::operator==(const Vector3& v) const
 {
-	return DirectX::XMFLOAT3(x, y, z);
+	return x == v.x && y == v.y && z == v.z;
 }
 
-bool LunarMath::Vector3::operator!=(Vector3 v)
-{
-	if (x == v.x && z == v.z && y == v.y)
-		return false;
-	return true;
+bool LunarMath::Vector3::operator!=(const Vector3& v) const
+{	
+	return x != v.x || y != v.y || z != v.z;
 }
+
+
+
 
 LunarMath::Vector3int::Vector3int(int NewX, int NewY, int NewZ)
 {

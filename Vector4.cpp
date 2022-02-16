@@ -221,7 +221,3 @@ void LunarMath::Vector4::operator/=(float c)
 	return;
 }
 
-LunarMath::Vector4::operator DirectX::XMFLOAT4()
-{
-	return DirectX::XMFLOAT4(x, y, z, w);
-}

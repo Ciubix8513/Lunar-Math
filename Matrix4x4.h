@@ -47,7 +47,7 @@ namespace LunarMath
 		Vector4 operator[] (int index);
 		Vector4 operator* (Vector4 v);
 		bool operator== (Matrix4x4);
-		//operator DirectX::XMFLOAT4X4() ;
+		
 
 #pragma endregion
 

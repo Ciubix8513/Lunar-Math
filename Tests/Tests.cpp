@@ -42,7 +42,7 @@ namespace Tests
 			Assert::AreEqual(v1, v);
 		};
 
-		TEST_METHOD(LengthTests)
+		TEST_METHOD(LengthTest)
 		{
 			auto v = Vector2();
 			Assert::AreEqual(0.0f, v.Length());
@@ -50,7 +50,7 @@ namespace Tests
 			Assert::AreEqual(1.0f, v.Length());
 			Assert::AreEqual(1.0f, Vector2::Length(v));
 		};
-		TEST_METHOD(NormalizeTests)
+		TEST_METHOD(NormalizeTest)
 		{
 			auto v = Vector2(10, 0);
 			Vector2 v1 = Vector2::Normalized(v);
@@ -115,11 +115,36 @@ namespace Tests
 			Assert::AreEqual(2.0f, v[0]);
 		}
 	};
-	/*TEST_CLASS(Vector3Tests)
+
+	TEST_CLASS(Vector3Tests)
 	{
 	public:
-		TEST_METHOD(EqualsTest)
-		{
+		TEST_METHOD(ConstructorTest)
+		{ 
+			auto v = Vector3();
+			Assert::AreEqual(0.0f, v.x);
+			Assert::AreEqual(0.0f, v.y);
+			Assert::AreEqual(0.0f, v.z);
+			v = Vector3(1);
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(1.0f, v.y);
+			Assert::AreEqual(1.0f, v.z);
+			v = Vector3(1, 2, 3);
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			v = Vector3(Vector2(1, 2), 3);
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			v = Vector3(1, Vector2(2, 3));
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
 		}
-	};*/
+		TEST_METHOD(AsignmentTest)
+		{
+		
+		}
+	};
 }

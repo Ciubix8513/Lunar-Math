@@ -52,7 +52,7 @@ namespace LunarMath
 		void operator-=(Vector4 v);
 		void operator*=(float c);
 		void operator/=(float c);
-		operator DirectX::XMFLOAT4();
+		
 
 #pragma endregion
 
