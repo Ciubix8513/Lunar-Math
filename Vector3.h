@@ -2,7 +2,8 @@
 #ifndef _VECTOR3_H_
 #define _VECTOR3_H_
 #include "Vector2.h"
-using namespace LunarMath;
+
+#define vec3 Vector3
 
 namespace LunarMath
 {
@@ -20,6 +21,8 @@ namespace LunarMath
 	class Vector3
 	{
 	public:
+		std::string ToString() const;
+
 #pragma region VectorCreation + Consts
 		Vector3(float f);
 		Vector3(float NewX, float NewY, float NewZ);
@@ -38,28 +41,40 @@ namespace LunarMath
 #pragma endregion
 
 #pragma region Functions
-		float Length();
-		static float Length(Vector3& v);
-		Vector3 Normalized();
-		void Normalize();
-		static float DotProduct(Vector3 a, Vector3 b);
-		static Vector3 CrossProdut(Vector3 a, Vector3 b);
-		static Vector3 Lerp(Vector3 a, Vector3 b, float t);
+
+		float Length() const;
+		static float Length(const Vector3& v);
+
+		Vector3 Normalized() const;
+		Vector3& Normalize();
+
+		static Vector3 Normalized(const Vector3& v);
+		static Vector3& Normalize(Vector3& v);
+
+		static float DotProduct(const Vector3& a, const Vector3& b);
+
+		static Vector3 CrossProduct(const Vector3& a, const Vector3& b);
+		static Vector3 Lerp(const Vector3& a, const Vector3& b, float t);
 #pragma endregion
 
 #pragma region operators
-		Vector3 operator+(Vector3 v);
-		Vector3 operator-(Vector3 v);
-		Vector3 operator-(float c);
-		Vector3 operator*(float c);
-		float operator*(Vector3 c);
+		float operator[](const int& i) const;
+		float& operator[](const int& i);
 
-		Vector3 operator/(float c);
-		void operator+=(Vector3 v);
-		void operator-=(Vector3 v);
-		void operator*=(float c);
-		void operator/=(float c);
-		
+		Vector3& operator=(Vector3 v);
+
+		Vector3 operator+(const Vector3& v) const;
+		Vector3 operator-(const Vector3& v) const;
+		Vector3 operator*(float c) const;
+		Vector3 operator/(float c) const;
+
+		float operator*(const Vector3& c) const;
+
+		Vector3& operator+=(const Vector3& v);
+		Vector3& operator-=(const Vector3& v);
+		Vector3& operator*=(float c);
+		Vector3& operator/=(float c);
+
 		bool operator==(const Vector3& v) const;
 		bool operator!=(const Vector3& v) const;
 #pragma endregion
