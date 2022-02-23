@@ -19,6 +19,11 @@ namespace Microsoft
 				auto s = v.ToString();
 				return std::wstring(s.begin(), s.end());
 			}
+			template<> static std::wstring ToString<Vector4>(const class Vector4& v)
+			{
+				auto s = v.ToString();
+				return std::wstring(s.begin(), s.end());
+			}
 		}
 	}
 }
@@ -236,6 +241,145 @@ namespace Tests
 			Assert::AreEqual(1.0f, v[0]);
 			Assert::AreEqual(2.0f, v[1]);
 			Assert::AreEqual(0.0f, v[2]);
+
+			v[0] += 1;
+			Assert::AreEqual(2.0f, v[0]);
+		}
+	};
+
+	TEST_CLASS(Vector4Tests) 
+	{
+	public:
+		TEST_METHOD(ConstructorTest)
+		{
+			auto v = Vector4();
+			Assert::AreEqual(0.0f, v.x);
+			Assert::AreEqual(0.0f, v.y);
+			Assert::AreEqual(0.0f, v.z);
+			Assert::AreEqual(0.0f, v.w);
+			v = Vector4(1);
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(1.0f, v.y);
+			Assert::AreEqual(1.0f, v.z);
+			Assert::AreEqual(1.0f, v.w);
+			v = Vector4(1, 2, 3,4);
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			Assert::AreEqual(4.0f, v.w);
+			v = Vector4(Vector2(1, 2), 3,4);
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			Assert::AreEqual(4.0f, v.w);
+			v = Vector4(1,2,Vector2( 3, 4));
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			Assert::AreEqual(4.0f, v.w);
+			v = Vector4(1,Vector2 (2, 3), 4);
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			Assert::AreEqual(4.0f, v.w);
+			v = Vector4(Vector2(1, 2), Vector2(3, 4));
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			Assert::AreEqual(4.0f, v.w);
+
+			v = Vector4(1, Vector3(2,3, 4));
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			Assert::AreEqual(4.0f, v.w);
+
+			v = Vector4(Vector3(1, 2,3), 4);
+			Assert::AreEqual(1.0f, v.x);
+			Assert::AreEqual(2.0f, v.y);
+			Assert::AreEqual(3.0f, v.z);
+			Assert::AreEqual(4.0f, v.w);
+		};
+
+		TEST_METHOD(AsignmentTest)
+		{
+			Vector4 v, v1;
+			v = v1 = Vector4(1, 0, 0,0);
+			Assert::AreEqual(v1, v);
+			Assert::AreEqual(Vector4(1, 0, 0,0), v1);
+		};
+
+		TEST_METHOD(LengthTest)
+		{
+			Vector4 v = Vector4(1, 0, 0,0);
+			Assert::AreEqual(1.0f, v.Length());
+			v.x = 4.0f;
+			Assert::AreEqual(4.0f, Vector4::Length(v));
+			v = Vector4(2, 2, 1,0);
+			Assert::AreEqual(3.0f, Vector4::Length(v));
+		};
+
+		TEST_METHOD(NormalizeTest)
+		{
+			auto v = Vector4(10, 0, 0,0);
+			Vector4 v1 = Vector4::Normalized(v);
+			Assert::AreEqual(v1, Vector4(1, 0, 0, 0));
+			v1 = v.Normalized();
+			Assert::AreEqual(v1, Vector4(1, 0, 0, 0));
+			v1 = v.Normalize();
+			Assert::AreEqual(v, Vector4(1, 0, 0, 0));
+			Assert::AreEqual(v1, Vector4(1, 0, 0, 0));
+			v = Vector4(2, 0, 0, 0);
+			v1 = Vector4::Normalize(v);
+			Assert::AreEqual(v, Vector4(1, 0, 0, 0));
+			Assert::AreEqual(v1, Vector4(1, 0, 0, 0));
+		};
+
+		TEST_METHOD(DotProductTest)
+		{
+			Assert::AreEqual(Vector4::Dot(Vector4(1, 0, 0,0), Vector4(0, 1, 0, 0)), 0.0f);
+			Assert::AreEqual(Vector4::Dot(Vector4(1, 0, 0, 0), Vector4(1, 0, 0, 0)), 1.0f);
+		};
+
+		TEST_METHOD(LerpTest)
+		{
+			Assert::AreEqual(Vector4(), Vector4::Lerp(Vector4(1, 0, 0,0), Vector4(-1, 0, 0,0), .5f));
+		};
+
+		TEST_METHOD(FloatOperatorsTest)
+		{
+			auto v = Vector4(2, 0, 0, 0);
+			Assert::AreEqual(Vector4(1, 0, 0, 0), v / 2);
+			Assert::AreEqual(Vector4(1, 0, 0, 0), v * .5f);
+			auto v1 = v /= 2.0f;
+			Assert::AreEqual(Vector4(1, 0, 0, 0), v1);
+			Assert::AreEqual(Vector4(1, 0, 0, 0), v);
+
+			v1 = v *= 2.0f;
+			Assert::AreEqual(Vector4(2, 0, 0, 0), v1);
+			Assert::AreEqual(Vector4(2, 0, 0, 0), v);
+		};
+		TEST_METHOD(VectorOperatorsTest)
+		{
+			auto v = Vector4(2, 0, 0, 0);
+			Assert::AreEqual(Vector4(1, 0, 0, 0), v - Vector4(1, 0, 0, 0));
+			Assert::AreEqual(Vector4(1, 0, 0, 0), v + Vector4(-1, 0, 0, 0));
+			auto v1 = v -= Vector4(1, 0, 0, 0);
+			Assert::AreEqual(Vector4(1, 0, 0, 0), v1);
+			Assert::AreEqual(Vector4(1, 0, 0, 0), v);
+
+			v1 = v += Vector4(1, 0, 0, 0);
+			Assert::AreEqual(Vector4(2, 0, 0, 0), v1);
+			Assert::AreEqual(Vector4(2, 0, 0, 0), v);
+		}
+
+		TEST_METHOD(VectorSubscriptTest)
+		{
+			auto v = Vector4(1, 2, 3,4);
+			Assert::AreEqual(1.0f, v[0]);
+			Assert::AreEqual(2.0f, v[1]);
+			Assert::AreEqual(3.0f, v[2]);
+			Assert::AreEqual(4.0f, v[3]);
 
 			v[0] += 1;
 			Assert::AreEqual(2.0f, v[0]);

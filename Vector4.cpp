@@ -1,5 +1,20 @@
 #include "Vector4.h"
 
+std::string LunarMath::Vector4::ToString() const
+{
+	std::ostringstream ss;
+	ss << "LunarMath::Vector4(" << x << " , " << y << " , " << z << " , " << w <<')';
+	return std::string(ss.str());
+}
+
+LunarMath::Vector4::Vector4(float NewXYZW)
+{
+	x = NewXYZW;
+	y = NewXYZW;
+	z = NewXYZW;
+	w = NewXYZW;
+}
+
 LunarMath::Vector4::Vector4(float NewX, float NewY, float NewZ, float NewW)
 {
 	x = NewX;
@@ -8,7 +23,7 @@ LunarMath::Vector4::Vector4(float NewX, float NewY, float NewZ, float NewW)
 	w = NewW;
 }
 
-LunarMath::Vector4::Vector4(Vector2 NewXY, float NewZ, float NewW)
+LunarMath::Vector4::Vector4(const Vector2& NewXY, float NewZ, float NewW)
 {
 	x = NewXY.x;
 	y = NewXY.y;
@@ -16,7 +31,7 @@ LunarMath::Vector4::Vector4(Vector2 NewXY, float NewZ, float NewW)
 	w = NewW;
 }
 
-LunarMath::Vector4::Vector4(Vector2 NewXY, Vector2 NewZW)
+LunarMath::Vector4::Vector4(const Vector2& NewXY,const Vector2& NewZW)
 {
 	x = NewXY.x;
 	y = NewXY.y;
@@ -24,7 +39,7 @@ LunarMath::Vector4::Vector4(Vector2 NewXY, Vector2 NewZW)
 	w = NewZW.y;
 }
 
-LunarMath::Vector4::Vector4(float NewX, Vector2 NewYZ, float NewW)
+LunarMath::Vector4::Vector4(float NewX,const Vector2& NewYZ, float NewW)
 {
 	x = NewX;
 	y = NewYZ.x;
@@ -32,7 +47,7 @@ LunarMath::Vector4::Vector4(float NewX, Vector2 NewYZ, float NewW)
 	w = NewW;
 }
 
-LunarMath::Vector4::Vector4(float NewX, float NewY, Vector2 NewZW)
+LunarMath::Vector4::Vector4(float NewX, float NewY,const Vector2& NewZW)
 {
 	x = NewX;
 	y = NewY;
@@ -40,7 +55,7 @@ LunarMath::Vector4::Vector4(float NewX, float NewY, Vector2 NewZW)
 	w = NewZW.y;
 }
 
-LunarMath::Vector4::Vector4(float NewX, Vector3 NewYZW)
+LunarMath::Vector4::Vector4(float NewX,const Vector3& NewYZW)
 {
 	x = NewX;
 	y = NewYZW.x;
@@ -48,7 +63,7 @@ LunarMath::Vector4::Vector4(float NewX, Vector3 NewYZW)
 	w = NewYZW.z;
 }
 
-LunarMath::Vector4::Vector4(Vector3 NewXYZ, float NewW)
+LunarMath::Vector4::Vector4(const Vector3& NewXYZ, float NewW)
 {
 	x = NewXYZ.x;
 	y = NewXYZ.y;
@@ -64,160 +79,203 @@ LunarMath::Vector4::Vector4()
 	w = 0;
 }
 
-Vector4 LunarMath::Vector4::Up()
+LunarMath::Vector4 LunarMath::Vector4::Up()
 {
 	return Vector4(0, 1, 0, 0);
 }
-Vector4 LunarMath::Vector4::Down()
+LunarMath::Vector4 LunarMath::Vector4::Down()
 {
 	return Vector4(0, -1, 0, 0);
 }
-Vector4 LunarMath::Vector4::Forward()
+LunarMath::Vector4 LunarMath::Vector4::Forward()
 {
 	return Vector4(0, 0, 1, 0);
 }
-Vector4 LunarMath::Vector4::Backward()
+LunarMath::Vector4 LunarMath::Vector4::Backward()
 {
 	return Vector4(0, 0, -1, 0);
 }
-Vector4 LunarMath::Vector4::Right()
+LunarMath::Vector4 LunarMath::Vector4::Right()
 {
 	return Vector4(1, 0, 0, 0);
 }
-Vector4 LunarMath::Vector4::Left()
+LunarMath::Vector4 LunarMath::Vector4::Left()
 {
 	return Vector4(-1, 0, 0, 0);
 }
-Vector4 LunarMath::Vector4::Zero()
+LunarMath::Vector4 LunarMath::Vector4::Zero()
 {
 	return Vector4(0, 0, 0, 0);
 }
 
-float LunarMath::Vector4::Length()
+float LunarMath::Vector4::Length() const
 {
-	return (float)sqrt(((double)x) * ((double)x) + ((double)y) * ((double)y) + ((double)z) * ((double)z) + ((double)w) * ((double)w));
+	return sqrt(x * x + y * y + z * z + w * w);
 }
-float LunarMath::Vector4::Length(Vector4& v)
+float LunarMath::Vector4::Length(const Vector4& v)
 {
 	return v.Length();
 }
 
-LunarMath::Vector4 LunarMath::Vector4::Normalized()
+LunarMath::Vector4 LunarMath::Vector4::Normalized() const
 {
 	return Vector4(x, y, z, w) / Length();
 }
-void LunarMath::Vector4::Normalize(Vector4& v)
+
+LunarMath::Vector4 LunarMath::Vector4::Normalized(const Vector4& v)
 {
-	v /= v.Length();
-	return;
-}
-void LunarMath::Vector4::Normalize()
-{
-	x /= Length();
-	y /= Length();
-	z /= Length();
-	w /= Length();
-	return;
+	return v / v.Length();
 }
 
-float LunarMath::Vector4::DotProduct(Vector4 a, Vector4 b)
+LunarMath::Vector4& LunarMath::Vector4::Normalize(Vector4& v)
+{
+	v /= v.Length();
+	return v;
+}
+
+LunarMath::Vector4& LunarMath::Vector4::Normalize()
+{
+	float l = Length();
+	x /= l;
+	y /= l;
+	z /= l;
+	w /= l;
+	return *this;
+}
+
+float LunarMath::Vector4::DotProduct(const Vector4& a,const Vector4& b)
 {
 	return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
 
-Vector3 LunarMath::Vector4::XYZ()
+LunarMath::Vector4 LunarMath::Vector4::Lerp(const Vector4& a, const Vector4& b, float t)
 {
-	return Vector3(x, y, z);
+	if (t < 0)
+		t = 0;
+	if (t > 1)
+		t = 1;
+	return a + ((b - a) * t);
 }
 
-Vector2 LunarMath::Vector4::XY()
+bool LunarMath::Vector4::operator==(const Vector4& v) const
 {
-	return Vector2(x, y);
+	return x == v.x &&y == v.y&&z == v.z && w == v.w;
 }
 
-Vector4 LunarMath::Vector4::operator+(Vector4 v)
+bool LunarMath::Vector4::operator!=(const Vector4& v) const
+{
+	return x == v.x || y == v.y || z == v.z || w == v.w;
+}
+
+LunarMath::Vector4 LunarMath::Vector4::operator+(const Vector4& v) const
 {
 	return Vector4(x + v.x, y + v.y, z + v.z, w + v.w);
 }
-Vector4 LunarMath::Vector4::operator-(Vector4 v)
+LunarMath::Vector4 LunarMath::Vector4::operator-(const Vector4& v) const
 {
 	return Vector4(x - v.x, y - v.y, z - v.z, w - v.w);
 }
-Vector4 LunarMath::Vector4::operator*(float c)
+LunarMath::Vector4 LunarMath::Vector4::operator*(float c) const
 {
 	return Vector4(x * c, y * c, z * c, w * c);
 }
-Vector4 LunarMath::Vector4::operator/(float c)
+LunarMath::Vector4 LunarMath::Vector4::operator/(float c) const
 {
 	return Vector4(x / c, y / c, z / c, w * c);
 }
 
-float LunarMath::Vector4::operator*(Vector4 v)
+float LunarMath::Vector4::operator*(const Vector4& v) const
 {
 	return x * v.x + y * v.y + z * v.z + w * v.w;
 }
 
-float LunarMath::Vector4::operator[](int index)
-{
-	sizeof(size_t);
 
-	switch (index)
+float LunarMath::Vector4::operator[](const int& i) const
+{
+	int I = i;
+#ifdef OVERFLOW_PROT
+	I = i % 4;
+#endif
+	switch (I)
 	{
 	case 0:
 		return x;
+		break;
 	case 1:
 		return y;
+		break;
 	case 2:
 		return z;
+		break;
 	case 3:
 		return w;
+		break;
 	default:
-		throw std::exception("wrong index value");
+		throw std::out_of_range("index was > 1");
 		break;
 	}
-	return -10000000000000000000.0f;
+
+	return 0;
 }
 
-void LunarMath::Vector4::operator+=(Vector3 v)
+float& LunarMath::Vector4::operator[](const int& i)
 {
-	x = x + v.x;
-	y = y + v.y;
-	z = z + v.z;
-	w = w;
-	return;
+	int I = i;
+#ifdef OVERFLOW_PROT
+	I = i % 4;
+#endif
+	switch (I)
+	{
+	case 0:
+		return  x;
+		break;
+	case 1:
+		return y;
+		break;
+	case 2:
+		return z;
+		break;
+	case 3:
+		return w;
+		break;
+	default:
+		throw std::out_of_range("index was > 1");
+		break;
+	}
+
+	return x;
 }
 
-void LunarMath::Vector4::operator+=(Vector4 v)
+LunarMath::Vector4& LunarMath::Vector4::operator+=(const Vector4& v)
 {
 	x = x + v.x;
 	y = y + v.y;
 	z = z + v.z;
 	w = w + v.w;
-	return;
+	return *this;
 }
-void LunarMath::Vector4::operator-=(Vector4 v)
+LunarMath::Vector4& LunarMath::Vector4::operator-=(const Vector4& v)
 {
 	x = x - v.x;
 	y = y - v.y;
 	z = z - v.z;
 	w = w - v.w;
 
-	return;
+	return *this;
 }
-void LunarMath::Vector4::operator*=(float c)
+LunarMath::Vector4& LunarMath::Vector4::operator*=(float c)
 {
 	x = x * c;
 	y = y * c;
 	z = z * c;
 	w = w * c;
-	return;
+	return *this;
 }
-void LunarMath::Vector4::operator/=(float c)
+LunarMath::Vector4& LunarMath::Vector4::operator/=(float c)
 {
 	x = x / c;
 	y = y / c;
 	z = z / c;
 	w = w * c;
-	return;
+	return *this;
 }
-

@@ -2,22 +2,25 @@
 #ifndef _VECTOR4_H_
 #define _VECTOR4_H_
 #include "Vector3.h"
-using namespace LunarMath;
+
 
 namespace LunarMath
 {
-	struct Vector4
+	class Vector4
 	{
 	public:
+		std::string ToString() const;
+
 #pragma region VectorCreation + Consts
-		Vector4(float NewX, float NewY, float NewZ, float NewW);
-		Vector4(Vector2 NewXY, float NewZ, float NewW);
-		Vector4(Vector2 NewXY, Vector2 NewZW);
-		Vector4(float NewX, Vector2 NewYZ, float NewW);
-		Vector4(float NewX, float NewY, Vector2 NewZW);
-		Vector4(float NewX, Vector3 NewYZW);
-		Vector4(Vector3 NewXYZ, float NewW);
 		Vector4();
+		Vector4(float NewXYZW);
+		Vector4(float NewX, float NewY, float NewZ, float NewW);
+		Vector4(const Vector2& NewXY, float NewZ, float NewW);
+		Vector4(float NewX, const  Vector2& NewYZ, float NewW);
+		Vector4(float NewX, float NewY, const Vector2& NewZW);
+		Vector4(const Vector2& NewXY,const Vector2& NewZW);
+		Vector4(float NewX,const Vector3& NewYZW);
+		Vector4(const Vector3& NewXYZ, float NewW);
 
 		static Vector4 Up();
 		static Vector4 Down();
@@ -29,31 +32,39 @@ namespace LunarMath
 #pragma endregion
 
 #pragma region Functions
-		float Length();
-		static float Length(Vector4& v);
-		Vector4 Normalized();
-		static void Normalize(Vector4& v);
-		void Normalize();
-		static float DotProduct(Vector4 a, Vector4 b);
-		Vector3 XYZ();
-		Vector2 XY();
+		float Length() const;
+		static float Length(const Vector4& v);
+
+		Vector4 Normalized() const;
+		Vector4& Normalize();
+
+		static Vector4 Normalized(const Vector4& v);
+		static Vector4& Normalize(Vector4& v);
+
+		static float DotProduct(const Vector4& a,const Vector4& b);
+
+		static Vector4 Lerp(const Vector4& a, const Vector4& b, float t);
+		
 #pragma endregion
 
 #pragma region operators
 
-		Vector4 operator+(Vector4 v);
-		Vector4 operator-(Vector4 v);
-		Vector4 operator*(float c);
-		Vector4 operator/(float c);
-		float operator*(Vector4 v);
-		float operator[](int index);
-		void operator+=(Vector3 v);
-		void operator+=(Vector4 v);
-		void operator-=(Vector4 v);
-		void operator*=(float c);
-		void operator/=(float c);
-		
+		bool operator==(const Vector4& v) const;
+		bool operator!=(const Vector4& v) const;
 
+		Vector4 operator+( const Vector4& v) const;
+		Vector4 operator-(const Vector4& v) const;
+		Vector4 operator*(float c) const;
+		Vector4 operator/(float c) const;
+		float operator*(const Vector4& v) const;
+
+		float operator[](const int& i) const;
+		float& operator[](const int& i);
+		
+		Vector4& operator+=(const Vector4& v);
+		Vector4& operator-=(const Vector4& v);
+		Vector4& operator*=(float c);
+		Vector4& operator/=(float c);
 #pragma endregion
 
 		float x, y, z, w;
