@@ -1,47 +1,85 @@
 #include "Quarernion.h"
 
-Quaternion::Quaternion()
+LunarMath::Quaternion::Quaternion()
 {
 	x = 0;
 	y = 0;
 	z = 0;
 	w = 0;
 }
-Quaternion::~Quaternion()
-{
-}
-Quaternion::Quaternion(float X, float Y, float Z, float W)
-{
-	x = X;
-	y = Y;
-	z = Z;
-	w = W;
-}
-Quaternion::Quaternion(Vector4 xyzw)
+
+LunarMath::Quaternion::Quaternion(const Vector4& xyzw)
 {
 	x = xyzw.x;
 	y = xyzw.y;
 	z = xyzw.z;
 	w = xyzw.w;
 }
-Quaternion::Quaternion(Vector3 xyz, float W)
+
+LunarMath::Quaternion::Quaternion(float XYZW)
 {
-	x = xyz.x;
-	y = xyz.y;
-	z = xyz.z;
-	w = W;
-}
-Quaternion::Quaternion(Vector2 xy, Vector2 zw)
-{
-	x = xy.x;
-	y = xy.y;
-	z = zw.x;
-	w = zw.y;
+	x = y = z = w = XYZW;
 }
 
-Quaternion::Quaternion(Vector3 rotation)
+LunarMath::Quaternion::Quaternion(const Vector2& XY, float Z, float W)
 {
-	Vector3 rot = rotation * Deg2Rad;
+	x = XY.x;
+	y = XY.y;
+	z = Z;
+	w = W;
+}
+
+LunarMath::Quaternion::Quaternion(float X, const Vector2& YZ, float W)
+{
+	x = X;
+	y = YZ.x;
+	z = YZ.y;
+	w = W;
+}
+
+LunarMath::Quaternion::Quaternion(float X, float Y, const Vector2& ZW)
+{
+	x = X;
+	y = Y;
+	z = ZW.x;
+	w = ZW.y;
+}
+
+LunarMath::Quaternion::Quaternion(const Vector2& XY, const Vector2& ZW)
+{
+	x = XY.x;
+	y = XY.y;
+	z = ZW.x;
+	w = ZW.y;
+}
+
+LunarMath::Quaternion::Quaternion(float X, const Vector3& YZW)
+{
+	x = X;
+	y = YZW.x;
+	z = YZW.y;
+	w = YZW.z;
+}
+
+LunarMath::Quaternion::Quaternion(const Vector3& XYZ, float W)
+{
+	x = XYZ.x;
+	y = XYZ.y;
+	z = XYZ.z;
+	w = W;
+}
+
+LunarMath::Quaternion::Quaternion(float X, float Y, float Z, float W)
+{
+	x = X;
+	y = Y;
+	z = Z;
+	w = W;
+}
+
+LunarMath::Quaternion::Quaternion(const Vector3& eulerAngles)
+{
+	Vector3 rot = eulerAngles * Deg2Rad;
 	float cy = (float)cos(rot.y * 0.5);
 	float sy = (float)sin(rot.y * 0.5);
 	float cp = (float)cos(rot.x * 0.5);
@@ -55,15 +93,15 @@ Quaternion::Quaternion(Vector3 rotation)
 	z = cr * cp * sy - sr * sp * cy;
 }
 
-Quaternion::Quaternion(float x, float y, float z)
+LunarMath::Quaternion::Quaternion(float X, float Y, float Z)
 {
-	Vector3 rot = Vector3(x, y, z) * Deg2Rad;
-	double cy = cos(rot.y * 0.5);
-	double sy = sin(rot.y * 0.5);
-	double cp = cos(rot.x * 0.5);
-	double sp = sin(rot.x * 0.5);
-	double cr = cos(rot.z * 0.5);
-	double sr = sin(rot.z * 0.5);
+	Vector3 rot = Vector3(X, Y, Z) * Deg2Rad;
+	float cy = (float)cos(rot.y * 0.5);
+	float sy = (float)sin(rot.y * 0.5);
+	float cp = (float)cos(rot.x * 0.5);
+	float sp = (float)sin(rot.x * 0.5);
+	float cr = (float)cos(rot.z * 0.5);
+	float sr = (float)sin(rot.z * 0.5);
 
 	w = cr * cp * cy + sr * sp * sy;
 	x = sr * cp * cy - cr * sp * sy;
@@ -72,7 +110,8 @@ Quaternion::Quaternion(float x, float y, float z)
 }
 
 //Stole some code from euclidianspace.com but shhhh.... don't tell anyone lol  :)
-Quaternion Quaternion::Slerp(Quaternion qa, Quaternion qb, float t)
+//Honestly I have NO idea how this works
+LunarMath::Quaternion LunarMath::Quaternion::Slerp(const Quaternion& qa, const Quaternion& qb, float t)
 {
 	//Clamp t
 	if (t > 1) t = 1;
@@ -109,7 +148,7 @@ Quaternion Quaternion::Slerp(Quaternion qa, Quaternion qb, float t)
 	return qm;
 }
 
-Vector3 Quaternion::Euler()
+LunarMath::Vector3 LunarMath::Quaternion::Euler() const
 {
 	Vector3 angles;
 	double sinr_cosp = 2 * (w * x + y * z);
@@ -131,53 +170,194 @@ Vector3 Quaternion::Euler()
 	return angles * (PI * 2);
 }
 
-Quaternion Quaternion::Inverse()
+LunarMath::Vector3 LunarMath::Quaternion::Euler(const Quaternion& q)
 {
-	return Conjugate() / pow(Magnitude(), 2);
+	return q.Euler();
 }
 
-Quaternion Quaternion::Invert(Quaternion q)
+LunarMath::Quaternion LunarMath::Quaternion::Inverse() const
+{
+	float m = Length();
+	return Conjugated() / (m * m);
+}
+
+LunarMath::Quaternion LunarMath::Quaternion::Inverse(const Quaternion& q)
 {
 	return q.Inverse();
 }
 
-Quaternion Quaternion::Conjugate()
+LunarMath::Quaternion& LunarMath::Quaternion::Invert()
+{
+	float m = Length();
+	Conjugate() /= m * m;
+	return *this;
+}
+
+LunarMath::Quaternion& LunarMath::Quaternion::Invert(Quaternion& q)
+{
+	return q.Invert();
+}
+
+LunarMath::Quaternion LunarMath::Quaternion::Conjugated() const
 {
 	return Quaternion(-x, -y, -z, w);
 }
 
-float Quaternion::Magnitude()
+LunarMath::Quaternion& LunarMath::Quaternion::Conjugate()
+{
+	x *= -1;
+	y *= -1;
+	z *= -1;
+	return *this;
+}
+
+float LunarMath::Quaternion::Length() const
 {
 	return sqrt(x * x + y * y + z * z + w * w);
 }
 
-bool Quaternion::operator==(Quaternion other)
+float LunarMath::Quaternion::Length(const Quaternion& q)
+{
+	return  q.Length();
+}
+
+bool LunarMath::Quaternion::operator==(const Quaternion& other) const
 {
 	return x == other.x && y == other.y && z == other.z && w == other.w;
 }
-Quaternion Quaternion::operator/(float f)
+
+bool LunarMath::Quaternion::operator!=(const Quaternion& o) const
+{
+	return x != o.x || y != o.y || z != o.z || w != o.w;
+}
+
+LunarMath::Quaternion& LunarMath::Quaternion::operator/=(float f)
+{
+	x /= f;
+	y /= f;
+	z /= f;
+	w /= f;
+	return *this;
+}
+
+LunarMath::Quaternion& LunarMath::Quaternion::operator*=(const Quaternion& o)
+{
+	x = w * o.x + x * o.w + y * o.z - z * o.y;// i
+	y = w * o.y - x * o.z + y * o.w + z * o.x;// j
+	z = w * o.z + x * o.y - y * o.x + z * o.w;// k
+	w = w * o.w - x * o.x - y * o.y - z * o.z;// 1
+	return *this;
+}
+
+LunarMath::Quaternion& LunarMath::Quaternion::operator*=(float f)
+{
+	x *= f;
+	y *= f;
+	z *= f;
+	w *= f;
+	return *this;
+}
+
+LunarMath::Quaternion& LunarMath::Quaternion::operator+=(const Quaternion& b)
+{
+	x += b.x;
+	y += b.y;
+	z += b.z;
+	w += b.w;
+	return *this;
+}
+
+LunarMath::Quaternion& LunarMath::Quaternion::operator-=(const Quaternion& q)
+{
+	x -= q.x;
+	y -= q.y;
+	z -= q.z;
+	w -= q.w;
+	return *this;
+}
+
+float LunarMath::Quaternion::operator[](const int& i) const
+{
+	int I = i;
+#ifdef OVERFLOW_PROT
+	I = i % 4;
+#endif
+	switch (I)
+	{
+	case 0:
+		return x;
+		break;
+	case 1:
+		return y;
+		break;
+	case 2:
+		return z;
+		break;
+	case 3:
+		return w;
+		break;
+	default:
+		throw std::out_of_range("index was > 1");
+		break;
+	}
+
+	return 0;
+}
+
+float& LunarMath::Quaternion::operator[](const int& i)
+{
+	int I = i;
+#ifdef OVERFLOW_PROT
+	I = i % 4;
+#endif
+	switch (I)
+	{
+	case 0:
+		return  x;
+		break;
+	case 1:
+		return y;
+		break;
+	case 2:
+		return z;
+		break;
+	case 3:
+		return w;
+		break;
+	default:
+		throw std::out_of_range("index was > 1");
+		break;
+	}
+
+	return x;
+}
+
+LunarMath::Quaternion LunarMath::Quaternion::operator/(float f) const
 {
 	return Quaternion(x / f, y / f, z / f, w / f);
 }
-Quaternion Quaternion::operator*(Quaternion other)
-{
-	Quaternion a = *this;
-	Quaternion b = other;
-	Quaternion q = Quaternion(
-		a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,   // i
-		a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x,   // j
-		a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w,   // k
-		a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z);  // 1
 
-	return q;
+LunarMath::Quaternion LunarMath::Quaternion::operator*(const Quaternion& o) const
+{
+	return Quaternion(
+		w * o.x + x * o.w + y * o.z - z * o.y,   // i
+		w * o.y - x * o.z + y * o.w + z * o.x,   // j
+		w * o.z + x * o.y - y * o.x + z * o.w,   // k
+		w * o.w - x * o.x - y * o.y - z * o.z);  // 1
 }
 
-Quaternion Quaternion::operator*(float f)
+LunarMath::Quaternion LunarMath::Quaternion::operator*(float f) const
 {
 	return Quaternion(x * f, y * f, z * f, w * f);
 }
 
-Quaternion Quaternion::operator+(Quaternion b)
+LunarMath::Quaternion LunarMath::Quaternion::operator+(const Quaternion& b) const
 {
 	return Quaternion(x + b.x, y + b.y, z + b.z, w + b.w);
 }
+
+LunarMath::Quaternion LunarMath::Quaternion::operator-(const Quaternion& q) const
+{
+	return Quaternion(x -q.x,y-q.y,z-q.z,w-q.w);
+}
+
